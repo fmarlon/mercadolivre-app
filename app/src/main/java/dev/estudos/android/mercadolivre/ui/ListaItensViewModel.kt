@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dev.estudos.android.mercadolivre.model.Item
 import dev.estudos.android.mercadolivre.model.SearchResponse
 import dev.estudos.android.mercadolivre.repository.ItemRepository
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,21 +19,14 @@ class ListaItensViewModel(val itemRepository: ItemRepository): ViewModel() {
     val listItems : LiveData<SearchResponse> = _listItems
 
     fun search(query: String) {
-        itemRepository.search(query).enqueue(object : Callback<SearchResponse> {
+        viewModelScope.launch {
+            Log.d("AndroidLabs", "Buscando itens com courotines iniciado")
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e("ListaItensViewModel.search", t.toString())
-                // _listItems.value = SearchResponse(query, results = listOf(Item(title = "ERROR")))
-            }
+            val response = itemRepository.search(query)
+            _listItems.value = response
 
-            override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
-            ) {
-                _listItems.value = response.body()
-            }
-
-        })
+            Log.d("AndroidLabs", "Buscando itens com courotines finalizado")
+        }
     }
 
 }

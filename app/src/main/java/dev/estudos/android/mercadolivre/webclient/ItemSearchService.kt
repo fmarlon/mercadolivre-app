@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface ItemSearchService {
 
     @GET("/sites/MLB/search")
-    fun search(@Query("q") query: String): Call<SearchResponse>
+    suspend fun search(@Query("q") query: String): SearchResponse
 
 }

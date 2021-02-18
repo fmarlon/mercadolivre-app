@@ -6,7 +6,7 @@ import retrofit2.Call
 
 class ItemRepositoryImpl(val itemSearchService: ItemSearchService): ItemRepository {
 
-    override fun search(query: String): Call<SearchResponse> {
+    override suspend fun search(query: String): SearchResponse {
         return itemSearchService.search(query)
     }
 

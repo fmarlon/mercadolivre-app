@@ -5,6 +5,6 @@ import retrofit2.Call
 
 interface ItemRepository {
 
-    fun search(query: String): Call<SearchResponse>
+    suspend fun search(query: String): SearchResponse
 
 }
